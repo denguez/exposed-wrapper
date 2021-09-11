@@ -4,8 +4,6 @@ plugins {
     `java-library`
 }
 
-group = "com.github.denguez"
-
 repositories {
     mavenCentral()
 }
@@ -31,6 +29,9 @@ dependencies {
 publishing {
     publications {
         val mavenJava by creating(MavenPublication::class) {
+            groupId = "com.github.denguez"
+            artifactId = "reifydb"
+            version = "1.1"
             from(components["java"])
         }
     }
