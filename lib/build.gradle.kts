@@ -4,6 +4,8 @@ plugins {
     `java-library`
 }
 
+groupId = "com.github.denguez"
+
 repositories {
     mavenCentral()
 }
