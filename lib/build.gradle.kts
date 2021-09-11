@@ -1,10 +1,8 @@
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.4.31"
     `maven-publish`
-    //`java-library`
+    `java-library`
 }
-
-group = "com.github.denguez"
 
 repositories {
     mavenCentral()
@@ -27,3 +25,15 @@ dependencies {
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
+
+/* publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            groupId = "com.github.denguez"
+            artifactId = "library"
+            version = "1.1"
+
+            from components.java
+        }
+    }
+} */
