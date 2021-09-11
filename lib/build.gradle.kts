@@ -1,7 +1,10 @@
 plugins {
     id("org.jetbrains.kotlin.jvm") version "1.4.31"
+    `maven-publish`
     //`java-library`
 }
+
+group = "com.github.denguez"
 
 repositories {
     mavenCentral()
