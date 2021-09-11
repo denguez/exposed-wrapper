@@ -37,14 +37,6 @@ publishing {
     }
 }
 
-/* publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            groupId = "com.github.denguez"
-            artifactId = "library"
-            version = "1.1"
-
-            from components.java
-        }
-    }
-} */
+java {
+    withSourcesJar()
+}
