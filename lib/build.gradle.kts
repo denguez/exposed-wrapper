@@ -26,6 +26,14 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
 
+publishing {
+    publications {
+        val mavenJava by creating(MavenPublication::class) {
+            from(components["java"])
+        }
+    }
+}
+
 /* publishing {
     publications {
         mavenJava(MavenPublication) {
