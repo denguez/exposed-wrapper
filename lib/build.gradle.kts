@@ -9,19 +9,17 @@ repositories {
 }
 
 dependencies {
-    // Postgres
-	runtimeOnly("org.postgresql:postgresql:42.2.2")
-
     // Exposed
     api("org.jetbrains.exposed:exposed-core:0.31.1")
     api("org.jetbrains.exposed:exposed-dao:0.31.1")
     api("org.jetbrains.exposed:exposed-jdbc:0.31.1")
     api("org.jetbrains.exposed:exposed-java-time:0.31.1")
 
-    implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
-    implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
-    testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
+    // Kotlin
+    implementation(kotlin("jdk8"))
+    implementation(platform(kotlin("bom")))
+    testImplementation(kotlin("test"))
+    testImplementation(kotlin("test-junit"))
 }
 
 publishing {
