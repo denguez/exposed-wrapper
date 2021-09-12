@@ -8,16 +8,18 @@ repositories {
     mavenCentral()
 }
 
+val exposedV = "0.31.1"
+
 dependencies {
     // Exposed
-    api("org.jetbrains.exposed:exposed-core:0.31.1")
-    api("org.jetbrains.exposed:exposed-dao:0.31.1")
-    api("org.jetbrains.exposed:exposed-jdbc:0.31.1")
-    api("org.jetbrains.exposed:exposed-java-time:0.31.1")
+    api("org.jetbrains.exposed:exposed-core:${exposedV}")
+    api("org.jetbrains.exposed:exposed-dao:${exposedV}")
+    api("org.jetbrains.exposed:exposed-jdbc:${exposedV}")
+    api("org.jetbrains.exposed:exposed-java-time:${exposedV}")
 
     // Kotlin
-    implementation(kotlin("jdk8"))
     implementation(platform(kotlin("bom")))
+    implementation(kotlin("stdlib-jdk8"))
     testImplementation(kotlin("test"))
     testImplementation(kotlin("test-junit"))
 }
@@ -26,7 +28,7 @@ publishing {
     publications {
         val mavenJava by creating(MavenPublication::class) {
             groupId = "com.github.denguez"
-            artifactId = "reifydb"
+            artifactId = "reify.db"
             version = "1.2"
             from(components["java"])
         }
