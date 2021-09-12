@@ -1,15 +1,10 @@
 package reifydb
 
-// import org.jetbrains.exposed.dao.ColumnWithTransform
 import org.jetbrains.exposed.dao.id.IntIdTable
 import org.jetbrains.exposed.sql.Op
 import org.jetbrains.exposed.sql.SqlExpressionBuilder
 import org.jetbrains.exposed.sql.`java-time`.date as sqlDate
 import org.jetbrains.exposed.sql.select
-
-// typealias Column<T> = SqlColumn<T>
-
-// typealias ColumnTransform<T, R> = ColumnWithTransform<T, R>
 
 typealias WhereExpression = SqlExpressionBuilder.() -> Op<Boolean>
 

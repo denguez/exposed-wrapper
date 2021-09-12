@@ -5,9 +5,9 @@ import org.jetbrains.exposed.dao.IntEntityClass
 import org.jetbrains.exposed.dao.id.EntityID as SQLEntityID
 import org.jetbrains.exposed.sql.Op.TRUE
 
-typealias Entity = IntEntity
-
 typealias EntityID = SQLEntityID<Int>
+
+abstract class Entity(id: EntityID): IntEntity(id)
 
 abstract class DAO<T : Entity>(table: Table) : IntEntityClass<T>(table) {
 
