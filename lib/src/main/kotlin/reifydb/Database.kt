@@ -9,7 +9,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class DatabaseConfig() {
     val driver = "org.postgresql.Driver"
     var url = ""
-    var user = ""
+    var username = ""
     var password = ""
     internal val tables: MutableList<Table> = mutableListOf()
 
@@ -21,7 +21,7 @@ fun Database(block: DatabaseConfig.() -> Unit) {
     Exposed.connect(
             config.url,
             driver = config.driver,
-            user = config.user,
+            user = config.username,
             password = config.password,
     )
     transaction {
