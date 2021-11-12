@@ -9,8 +9,9 @@ import org.jetbrains.exposed.sql.transactions.transaction
 class DatabaseConfig() {
     val driver = "org.postgresql.Driver"
     var url = ""
-    var username = ""
+    var username = "root"
     var password = ""
+    var logger = false
     internal val tables: MutableList<Table> = mutableListOf()
 
     fun tables(vararg tables: Table) = this.tables.addAll(tables)
@@ -25,8 +26,9 @@ fun Database(block: DatabaseConfig.() -> Unit) {
             password = config.password,
     )
     transaction {
-        addLogger(StdOutSqlLogger)
-        SchemaUtils.create(*config.tables.toTypedArray())
+        val tables = config.tables.toTypedArray()
+        if (tables.isNotEmpty()) SchemaUtils.create(*tables)
+        if (config.logger) addLogger(StdOutSqlLogger)
     }
 }
 
