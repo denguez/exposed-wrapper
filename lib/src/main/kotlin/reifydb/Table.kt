@@ -8,7 +8,7 @@ import org.jetbrains.exposed.sql.select
 
 typealias WhereExpression = SqlExpressionBuilder.() -> Op<Boolean>
 
-abstract class Table(name: String?) : IntIdTable(name) {
+abstract class Table(name: String = "") : IntIdTable(name) {
     fun string(name: String) = varchar(name, 255)
     fun date(name: String) = sqlDate(name)
 
