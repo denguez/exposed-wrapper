@@ -10,7 +10,7 @@ import org.jetbrains.exposed.sql.Column
 
 typealias WhereExpression = SqlExpressionBuilder.() -> Op<Boolean>
 
-abstract class Table<ID: Comparable<ID>(name: String = ""): IdTable<ID>(name) {
+abstract class Table<ID: Comparable<ID>>(name: String = ""): IdTable<ID>(name) {
     fun<T> primaryKey(column: Column<T>) = PrimaryKey(column) 
     fun string(name: String) = varchar(name, 255)
     fun date(name: String) = sqlDate(name)
@@ -20,11 +20,4 @@ abstract class Table<ID: Comparable<ID>(name: String = ""): IdTable<ID>(name) {
     }
 }
 
-abstract class IDTable(name: String = "") : IntIdTable(name) {
-    fun string(name: String) = varchar(name, 255)
-    fun date(name: String) = sqlDate(name)
-
-    fun join(other: IDTable, where: WhereExpression) = run {
-        innerJoin(other).slice(columns).select(where).withDistinct()
-    }
-}
+abstract class IDTable(name: String = "") : Table<Int>(name)

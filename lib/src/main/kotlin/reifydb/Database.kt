@@ -12,9 +12,9 @@ class DatabaseConfig() {
     var username = "root"
     var password = ""
     var logger = false
-    internal val tables: MutableList<Table> = mutableListOf()
+    internal val tables: MutableList<Table<*>> = mutableListOf()
 
-    fun tables(vararg tables: Table) = this.tables.addAll(tables)
+    fun tables(vararg tables: Table<*>) = this.tables.addAll(tables)
 }
 
 fun Database(block: DatabaseConfig.() -> Unit) {
