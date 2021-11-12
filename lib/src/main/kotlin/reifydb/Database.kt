@@ -7,7 +7,7 @@ import org.jetbrains.exposed.sql.addLogger
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class DatabaseConfig() {
-    val driver = "org.postgresql.Driver"
+    var driver = "org.postgresql.Driver"
     var url = ""
     var username = "root"
     var password = ""
