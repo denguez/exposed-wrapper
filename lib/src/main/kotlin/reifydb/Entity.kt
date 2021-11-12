@@ -8,6 +8,6 @@ typealias ID<T> = EntityID<T>
 
 typealias IntID = EntityID<Int>
 
-abstract class Entity<T : Comparable<T>>(id: ID<T>) : Entity<T>(id)
+abstract class IDEntity<T : Comparable<T>>(id: ID<T>) : Entity<T>(id)
 
-abstract class IDEntity(id: IntID) : IntEntity(id)
+abstract class IntIDEntity(id: IntID) : IntEntity(id)

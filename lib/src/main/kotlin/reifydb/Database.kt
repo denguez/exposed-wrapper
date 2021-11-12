@@ -4,6 +4,7 @@ import org.jetbrains.exposed.sql.Database as Exposed
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.StdOutSqlLogger
 import org.jetbrains.exposed.sql.addLogger
+import org.jetbrains.exposed.sql.Table
 import org.jetbrains.exposed.sql.transactions.transaction
 
 class DatabaseConfig() {
@@ -12,9 +13,9 @@ class DatabaseConfig() {
     var username = "root"
     var password = ""
     var logger = false
-    internal val tables: MutableList<Table<*>> = mutableListOf()
+    internal val tables: MutableList<Table> = mutableListOf()
 
-    fun tables(vararg tables: Table<*>) = this.tables.addAll(tables)
+    fun tables(vararg tables: Table) = this.tables.addAll(tables)
 }
 
 fun Database(block: DatabaseConfig.() -> Unit) {
