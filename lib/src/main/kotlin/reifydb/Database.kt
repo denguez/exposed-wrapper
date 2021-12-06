@@ -18,9 +18,9 @@ class DatabaseConfig() {
     fun tables(vararg tables: Table) = this.tables.addAll(tables)
 }
 
-fun Database(block: DatabaseConfig.() -> Unit) {
+fun Database(block: DatabaseConfig.() -> Unit): Exposed {
     val config = DatabaseConfig().apply(block)
-    Exposed.connect(
+    val db = Exposed.connect(
             config.url,
             driver = config.driver,
             user = config.username,
@@ -31,6 +31,7 @@ fun Database(block: DatabaseConfig.() -> Unit) {
         if (tables.isNotEmpty()) SchemaUtils.create(*tables)
         if (config.logger) addLogger(StdOutSqlLogger)
     }
+    return db
 }
 
 
