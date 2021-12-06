@@ -26,7 +26,7 @@ fun Database(block: DatabaseConfig.() -> Unit): Exposed {
             user = config.username,
             password = config.password,
     )
-    transaction {
+    transaction(db) {
         val tables = config.tables.toTypedArray()
         if (tables.isNotEmpty()) SchemaUtils.create(*tables)
         if (config.logger) addLogger(StdOutSqlLogger)
