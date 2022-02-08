@@ -7,20 +7,29 @@ import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.Op.TRUE
 
 abstract class DAO(val table: Table, val db: Database? = null) {
+    suspend fun <X> transaction(block: () -> X) = 
+            transaction(db) { block() }
+
+    suspend fun totalCount(): Long = 
+            transaction { table.selectAll().count() }
+
     suspend open fun create(statement: CreateExpression) =
-            transaction(db) { table.insert(statement) }
+            transaction { table.insert(statement) }
+
+    suspend open fun readAll() = 
+            transaction { table.selectAll().toList() }
 
     suspend open fun read(where: WhereExpression) = 
-            transaction(db) { table.select(where).toList() }
+            transaction { table.select(where).toList() }
 
     suspend open fun readOne(where: WhereExpression) =
-            transaction(db) { table.select(where).firstOrNull() }
+            transaction { table.select(where).firstOrNull() }
 
     suspend open fun update(where: WhereExpression, block: UpdateExpression) =
-            transaction(db) { table.update(where, body = block) }
+            transaction { table.update(where, body = block) }
 
     suspend open fun delete(where: WhereExpression) =
-            transaction(db) { table.deleteWhere(op = where) }
+            transaction { table.deleteWhere(op = where) }
 }
 
 abstract class IDDAO<I : Comparable<I>, T : IDEntity<I>>(
@@ -28,61 +37,78 @@ abstract class IDDAO<I : Comparable<I>, T : IDEntity<I>>(
         val db: Database? = null
 ) : EntityClass<I, T>(table) {
 
+    suspend fun <X> transaction(block: () -> X) = 
+            transaction(db) { block() }
+
+    suspend fun totalCount(): Long = 
+            transaction { count() }
+
     suspend open fun create(block: T.() -> Unit): T = 
-            transaction(db) { new(block) }
+            transaction { new(block) }
 
-    suspend open fun read(where: WhereExpression = { TRUE }) = 
-            transaction(db) { find(where).toList() }
+    suspend open fun readAll(): List<T> = 
+            transaction { all().toList() }
 
-    suspend open fun readOne(where: WhereExpression): T? = 
-            transaction(db) { find(where).firstOrNull() }
+    suspend open fun read(where: WhereExpression = { TRUE }) =
+            transaction { find(where).toList() }
 
-    suspend open fun update(entity: T, block: T.() -> Unit) = 
-            transaction(db) { entity.apply(block) }
+    suspend open fun readOne(where: WhereExpression): T? =
+            transaction { find(where).firstOrNull() }
 
-    suspend open fun update(where: WhereExpression, block: T.() -> Unit) = 
-            transaction(db) { find(where).forEach { it.apply(block) } }
+    suspend open fun update(entity: T, block: T.() -> Unit) =
+            transaction { entity.apply(block) }
+
+    suspend open fun update(where: WhereExpression, block: T.() -> Unit) =
+            transaction { find(where).forEach { it.apply(block) } }
 
     suspend open fun delete(entity: T) = 
-            transaction(db) { entity.delete() }
+            transaction { entity.delete() }
 
-    suspend open fun delete(where: WhereExpression) = 
-            transaction(db) { find(where).forEach { it.delete() } }
+    suspend open fun delete(where: WhereExpression) =
+            transaction { find(where).forEach { it.delete() } }
 
     suspend open fun <R : Comparable<R>> readSorted(
             selector: (T) -> R?,
             where: WhereExpression = { TRUE }
-    ) = transaction(db) { find(where).sortedBy(selector).toList() }
+    ) = transaction { find(where).sortedBy(selector).toList() }
+
 }
 
-abstract class IntIDDAO<T : IntIDEntity>(
-    table: IntIDTable, 
-    val db: Database? = null
-) : IntEntityClass<T>(table) {
+abstract class IntIDDAO<T : IntIDEntity>(table: IntIDTable, val db: Database? = null) :
+        IntEntityClass<T>(table) {
+
+    suspend fun <X> transaction(block: () -> X) = 
+            transaction(db) { block() }
+
+    suspend fun totalCount(): Long = 
+            transaction { count() }
 
     suspend open fun create(block: T.() -> Unit): T = 
-            transaction(db) { new(block) }
+            transaction { new(block) }
 
-    suspend open fun read(where: WhereExpression = { TRUE }) = 
-            transaction(db) { find(where).toList() }
+    suspend open fun readAll(): List<T> = 
+            transaction { all().toList() }
 
-    suspend open fun readOne(where: WhereExpression): T? = 
-            transaction(db) { find(where).firstOrNull() }
+    suspend open fun read(where: WhereExpression = { TRUE }) =
+            transaction { find(where).toList() }
 
-    suspend open fun update(entity: T, block: T.() -> Unit) = 
-            transaction(db) { entity.apply(block) }
+    suspend open fun readOne(where: WhereExpression): T? =
+            transaction { find(where).firstOrNull() }
 
-    suspend open fun update(where: WhereExpression, block: T.() -> Unit) = 
-            transaction(db) { find(where).forEach { it.apply(block) } }
+    suspend open fun update(entity: T, block: T.() -> Unit) =
+            transaction { entity.apply(block) }
+
+    suspend open fun update(where: WhereExpression, block: T.() -> Unit) =
+            transaction { find(where).forEach { it.apply(block) } }
 
     suspend open fun delete(entity: T) = 
-            transaction(db) { entity.delete() }
+            transaction { entity.delete() }
 
-    suspend open fun delete(where: WhereExpression) = 
-            transaction(db) { find(where).forEach { it.delete() } }
+    suspend open fun delete(where: WhereExpression) =
+            transaction { find(where).forEach { it.delete() } }
 
     suspend open fun <R : Comparable<R>> readSorted(
             selector: (T) -> R?,
             where: WhereExpression = { TRUE }
-    ) = transaction(db) { find(where).sortedBy(selector).toList() }
+    ) = transaction { find(where).sortedBy(selector).toList() }
 }
